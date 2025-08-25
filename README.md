@@ -158,3 +158,34 @@ See [GOOGLE_REVIEWS_RESEARCH.md](./GOOGLE_REVIEWS_RESEARCH.md) for detailed rese
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 📁 File Overview
+
+### Main App Structure
+- `src/app/layout.tsx`: Root layout, global styles, favicon
+- `src/app/page.tsx`: Main dashboard landing page
+- `src/app/analytics/page.tsx`: Analytics dashboard
+- `src/app/settings/page.tsx`: Settings page
+- `src/app/properties/page.tsx`: Properties dashboard with filters and cards
+- `src/app/properties/[slug]/page.tsx`: Individual property details and reviews
+
+### API Routes
+- `src/app/api/reviews/hostaway/route.ts`: Hostaway reviews API integration
+- `src/app/api/reviews/google/route.ts`: Google reviews API integration
+
+### Components
+- `src/components/Header.tsx`: Header with logo and navigation
+- `src/components/Filters.tsx`: Filter controls for dashboard and properties
+- `src/components/ReviewCard.tsx`: Card for displaying reviews
+
+### Data & Utilities
+- `src/data/mock-reviews.ts`: Mock review data
+- `src/data/all-reviews.ts`: Combines and normalizes all reviews
+- `src/data/random-google-reviews.ts`: Mock Google reviews
+- `src/lib/types.ts`: TypeScript types and interfaces
+- `src/lib/propertyImages.ts`: Property image utilities
+- `src/lib/dateUtils.ts`: Date formatting utilities
+- `src/lib/devUtils.ts`: Development utilities
+
+### Styles
+- `src/app/globals.css`: Global CSS styles
