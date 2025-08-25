@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Review } from '@/lib/types';
-import { mockReviews } from '@/data/mock-reviews';
 import { allReviews } from '@/data/all-reviews';
 import { formatDateConsistent } from '@/lib/dateUtils';
 import { getPropertyImages } from '@/lib/propertyImages';
@@ -12,7 +11,6 @@ import Image from 'next/image';
 
 export default function PropertyPage() {
   const params = useParams();
-  const router = useRouter();
   const [propertyReviews, setPropertyReviews] = useState<Review[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editableProperty, setEditableProperty] = useState({

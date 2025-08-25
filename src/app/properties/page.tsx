@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { mockReviews } from '@/data/mock-reviews';
 import Header from '@/components/Header';
+import Image from 'next/image';
 
 interface Property {
   id: string;
@@ -198,7 +199,7 @@ export default function PropertiesPage() {
 
   // Filter and sort properties
   const filteredAndSortedProperties = useMemo(() => {
-    let filtered = properties.filter(property => {
+    const filtered = properties.filter(property => {
       const matchesSearch = property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            property.location.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesLocation = !locationFilter || property.location.includes(locationFilter);
@@ -431,9 +432,11 @@ export default function PropertiesPage() {
             <div key={property.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden">
               {/* Property Image */}
               <div className="relative h-48 bg-gray-200 overflow-hidden">
-                <img 
-                  src={property.image} 
+                <Image 
+                  src={property.image}
                   alt={property.name}
+                  width={400}
+                  height={192}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTIwTDIwMCAxNDBMMjI1IDEyMEwyNTAgMTQwTDI3NSAxMjBMMjc1IDE4MEwxNzUgMTgwVjEyMFoiIGZpbGw9IiM5Q0E0QUYiLz4KPGNpcmNsZSBjeD0iMjAwIiBjeT0iMTUwIiByPSIxNSIgZmlsbD0iIzY5N0M5QSIvPgo8L3N2Zz4K';

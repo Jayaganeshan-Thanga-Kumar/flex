@@ -2,7 +2,7 @@
 
 A comprehensive reviews management system for Flex Living properties, enabling managers to assess property performance through guest reviews and manage public review displays.
 
-## 🚀 Features
+## Features
 
 ### Manager Dashboard
 - **Review Management**: Approve, deny, or keep reviews pending
@@ -22,19 +22,19 @@ A comprehensive reviews management system for Flex Living properties, enabling m
 - **Data Normalization**: Converts various rating scales to standardized 5-star system
 - **Review Filtering**: Processes only guest-to-host reviews for display
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS 4
 - **API**: Next.js API Routes
 - **Data Handling**: TypeScript interfaces for type safety
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository**
 ```bash
-git clone [repository-url]
-cd flex-reviews
+git clone https://github.com/Jayaganeshan-Thanga-Kumar/flex.git
+cd flex
 ```
 
 2. **Install dependencies**
@@ -50,7 +50,7 @@ npm run dev
 4. **Open in browser**
 Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 🔧 API Endpoints
+## API Endpoints
 
 ### GET `/api/reviews/hostaway`
 Fetches and normalizes review data from Hostaway API.
@@ -76,7 +76,7 @@ Fetches and normalizes review data from Hostaway API.
 - Converts category ratings to overall rating when needed
 - Sets initial status to 'pending' for manager review
 
-## 🏗 Architecture Decisions
+## Architecture Decisions
 
 ### Component Structure
 - **Modular Design**: Separate components for filters, review cards, and headers
@@ -98,7 +98,7 @@ Fetches and normalizes review data from Hostaway API.
 Hostaway API → Normalized Data → Pending Status → Manager Review → Approved/Denied → Public Display
 ```
 
-## 📊 Dashboard Features
+## Dashboard Features
 
 ### Statistics Cards
 - **Total Reviews**: Count of all reviews in system
@@ -120,7 +120,7 @@ Hostaway API → Normalized Data → Pending Status → Manager Review → Appro
 - **Review Preview**: Full review content and metadata display
 - **Property Linking**: Direct navigation to property pages
 
-## 🔗 Property Pages
+## Property Pages
 
 Property pages are accessible via `/properties/[propertyName]` and include:
 - **Hero Section**: Property branding and key metrics
@@ -128,7 +128,7 @@ Property pages are accessible via `/properties/[propertyName]` and include:
 - **Individual Reviews**: Detailed approved review display
 - **Booking Interface**: Mock booking form and property amenities
 
-## 🔍 Google Reviews Integration
+## Google Reviews Integration
 
 See [GOOGLE_REVIEWS_RESEARCH.md](./GOOGLE_REVIEWS_RESEARCH.md) for detailed research on Google Reviews API integration feasibility and implementation approach.
 
@@ -136,30 +136,7 @@ See [GOOGLE_REVIEWS_RESEARCH.md](./GOOGLE_REVIEWS_RESEARCH.md) for detailed rese
 **Feasibility**: Confirmed viable ✅  
 **Implementation**: Ready for development phase
 
-## 🚧 Future Enhancements
-
-- **Trends Analysis**: Identify recurring themes in reviews
-- **Sentiment Analysis**: Automated review sentiment scoring
-- **Response Management**: Manager response to guest reviews
-- **Multi-channel Integration**: Additional review sources beyond Hostaway
-- **Advanced Analytics**: Performance trends and insights dashboard
-
-## 📝 Development Notes
-
-- **Mock Data**: Currently uses mock data for demonstration
-- **API Integration**: Hostaway API structure implemented but mocked for development
-- **Responsive Design**: Fully responsive across all device sizes
-- **Performance**: Optimized with pagination and efficient filtering
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📁 File Overview
+## File Overview
 
 ### Main App Structure
 - `src/app/layout.tsx`: Root layout, global styles, favicon

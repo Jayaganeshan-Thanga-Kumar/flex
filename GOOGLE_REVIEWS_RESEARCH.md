@@ -1,3 +1,9 @@
+# File Purpose: Google Reviews Integration Research
+
+Documents the feasibility, requirements, and technical approach for integrating Google Reviews into the Flex Living Reviews Dashboard using the Google Places API.
+
+---
+
 # Google Reviews Integration Research
 
 ## Overview

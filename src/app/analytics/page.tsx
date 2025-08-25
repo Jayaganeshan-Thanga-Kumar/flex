@@ -35,7 +35,7 @@ export default function AnalyticsPage() {
     // Filter reviews based on selected time range
     const getFilteredReviews = () => {
       const now = new Date();
-      let startDate = new Date();
+      const startDate = new Date();
       switch (timeRange) {
         case '1m':
           startDate.setMonth(now.getMonth() - 1);
@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
     };
 
     const filteredReviews = getFilteredReviews();
-    const approvedReviews = filteredReviews.filter(r => r.status === 'approved');
+    // Remove unused approvedReviews variable
 
     // Generate monthly trends based on time range
     const generateMonthlyTrends = () => {
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
       }
       
       // Store all reviews from the trends for consistency calculations
-      let allTrendReviews = [];
+      let allTrendReviews: typeof filteredReviews = [];
       
       for (let i = monthsToShow - 1; i >= 0; i--) {
         const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -182,7 +182,7 @@ export default function AnalyticsPage() {
       topPerformers,
       needsAttention
     };
-  }, [timeRange]);
+  }, [timeRange, googleReviews]);
 
   const getMetricColor = (value: number, type: 'rating' | 'trend' | 'approval') => {
     switch (type) {
@@ -402,7 +402,7 @@ export default function AnalyticsPage() {
           <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-100">
             <h2 className="text-xl font-light text-gray-900 mb-6">Monthly Trends</h2>
             <div className="space-y-4">
-              {analyticsData.monthlyTrends.map((month, index) => (
+              {analyticsData.monthlyTrends.map((month) => (
                 <div key={month.month} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">

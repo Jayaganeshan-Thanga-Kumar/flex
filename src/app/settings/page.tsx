@@ -49,7 +49,7 @@ export default function SettingsPage() {
     }));
   };
 
-  const handleDisplayChange = (key: keyof DisplaySettings, value: any) => {
+  const handleDisplayChange = (key: keyof DisplaySettings, value: string | number | boolean) => {
     setDisplay(prev => ({
       ...prev,
       [key]: value

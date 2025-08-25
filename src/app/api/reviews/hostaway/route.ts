@@ -21,7 +21,7 @@ export async function GET() {
       let errorBody = '';
       try {
         errorBody = await response.text();
-      } catch (e) {
+      } catch {
         errorBody = '[Could not read error body]';
       }
       console.error('Hostaway API error response:', errorBody);

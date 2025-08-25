@@ -37,12 +37,17 @@ export async function GET() {
     }
     const reviews = await getGoogleReviews(placeId);
     // Normalize reviews to your internal format
-    const normalizedReviews = reviews.map((review: any, idx: number) => ({
+    const normalizedReviews = reviews.map((review: {
+      time?: number;
+      author_name: string;
+      rating: number;
+      text: string;
+    }, idx: number) => ({
       id: review.time ? review.time.toString() : idx.toString(),
       author: review.author_name,
       rating: review.rating,
       content: review.text,
-      date: new Date(review.time * 1000).toISOString().split('T')[0],
+  date: review.time ? new Date(review.time * 1000).toISOString().split('T')[0] : '',
       status: 'approved',
       listingName: PROPERTY_NAME,
       source: 'google',
