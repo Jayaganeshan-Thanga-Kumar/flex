@@ -6,6 +6,8 @@ import { mockReviews } from '@/data/mock-reviews';
 import Header from '@/components/Header';
 import Image from 'next/image';
 
+import { Review } from '@/lib/types';
+
 interface Property {
   id: string;
   name: string;
@@ -24,6 +26,13 @@ interface Property {
   status: 'active' | 'maintenance' | 'inactive';
 }
 
+interface PropertyStats {
+  totalReviews: number;
+  averageRating: number;
+  approvedReviews: number;
+  pendingReviews: number;
+}
+
 export default function PropertiesPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,11 +43,10 @@ export default function PropertiesPage() {
 
   // Calculate property statistics from reviews
   const propertyStats = useMemo(() => {
-    const stats: Record<string, any> = {};
-    
-    // Get unique property names from reviews
-    const uniqueProperties = Array.from(new Set(mockReviews.map(r => r.listingName)));
-    
+  const stats: Record<string, PropertyStats> = {};
+  // Get unique property names from reviews
+  const uniqueProperties = Array.from(new Set(mockReviews.map(r => r.listingName)));
+
     uniqueProperties.forEach(propertyName => {
       const propertyReviews = mockReviews.filter(r => r.listingName === propertyName);
       const approvedReviews = propertyReviews.filter(r => r.status === 'approved');

@@ -37,16 +37,25 @@ export async function GET() {
 
     // Normalize the reviews to our internal format
     const normalizedReviews: Review[] = hostawayData.result
-      .filter((review: any) => review.type === 'guest-to-host') // Only guest reviews
-      .map((review: any) => {
+      .filter((review: unknown) => (review as { type?: string }).type === 'guest-to-host') // Only guest reviews
+      .map((review: unknown) => {
+        const r = review as {
+          id: string | number;
+          guestName?: string;
+          publicReview?: string;
+          submittedAt?: string | number;
+          listingName?: string;
+          rating?: number;
+          reviewCategory?: { rating: number }[];
+        };
         // Calculate overall rating from categories if no direct rating provided
-        let overallRating = review.rating;
+        let overallRating = r.rating;
 
-        if (!overallRating && review.reviewCategory && review.reviewCategory.length > 0) {
-          const avgCategoryRating = review.reviewCategory.reduce(
+        if (!overallRating && r.reviewCategory && r.reviewCategory.length > 0) {
+          const avgCategoryRating = r.reviewCategory.reduce(
             (acc: number, curr: { rating: number }) => acc + curr.rating,
             0
-          ) / review.reviewCategory.length;
+          ) / r.reviewCategory.length;
           // Convert from 10-point scale to 5-point scale
           overallRating = avgCategoryRating / 2;
         }
@@ -57,13 +66,13 @@ export async function GET() {
         }
 
         return {
-          id: review.id.toString(),
-          author: review.guestName,
+          id: r.id.toString(),
+          author: r.guestName,
           rating: Math.round(overallRating * 2) / 2, // Round to nearest 0.5
-          content: review.publicReview,
-          date: new Date(review.submittedAt).toISOString().split('T')[0],
+          content: r.publicReview,
+          date: r.submittedAt ? new Date(r.submittedAt).toISOString().split('T')[0] : '',
           status: 'pending' as const, // All new reviews start as pending for manager review
-          listingName: review.listingName,
+          listingName: r.listingName,
           source: 'hostaway' as const,
           channel: 'Hostaway Platform'
         };

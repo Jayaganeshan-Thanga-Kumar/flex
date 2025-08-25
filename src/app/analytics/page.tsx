@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
       }
       
       // Store all reviews from the trends for consistency calculations
-      let allTrendReviews: typeof filteredReviews = [];
+  const allTrendReviews: typeof filteredReviews = [];
       
       for (let i = monthsToShow - 1; i >= 0; i--) {
         const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -245,39 +245,36 @@ export default function AnalyticsPage() {
       <Header />
       
       {/* Hero Section */}
-      <div className="bg-white">
-        <div className="relative h-64 bg-gradient-to-r from-gray-100 to-gray-50 overflow-hidden">
-          <div className="absolute inset-0 bg-white bg-opacity-60"></div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-            <div className="text-left">
-              <h1 className="text-4xl md:text-5xl font-light text-gray-800 mb-4 tracking-wide">
-                Analytics
-                <span className="block text-2xl md:text-3xl font-extralight text-gray-600 mt-2">Performance Insights</span>
-              </h1>
-              <p className="text-lg text-gray-600 font-light">
-                Deep insights into your property performance and guest satisfaction
-              </p>
-              <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                Showing data for: {getTimeRangeLabel()}
-              </div>
+      <div className="relative h-64 bg-gradient-to-r from-gray-100 to-gray-50 overflow-hidden">
+        <div className="absolute inset-0 bg-white bg-opacity-60"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+          <div className="text-left">
+            <h1 className="text-4xl md:text-5xl font-light text-gray-800 mb-4 tracking-wide">
+              Analytics
+              <span className="block text-2xl md:text-3xl font-extralight text-gray-600 mt-2">Performance Insights</span>
+            </h1>
+            <p className="text-lg text-gray-600 font-light">
+              Deep insights into your property performance and guest satisfaction
+            </p>
+            <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              Showing data for: {getTimeRangeLabel()}
             </div>
-            
-            {/* Time Range Filter */}
-            <div className="hidden md:block">
-              <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-gray-400 focus:border-transparent"
-              >
-                <option value="1m">Last Month</option>
-                <option value="3m">Last 3 Months</option>
-                <option value="6m">Last 6 Months</option>
-                <option value="1y">Last Year</option>
-              </select>
-            </div>
+          </div>
+          {/* Time Range Filter */}
+          <div className="hidden md:block">
+            <select
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+            >
+              <option value="1m">Last Month</option>
+              <option value="3m">Last 3 Months</option>
+              <option value="6m">Last 6 Months</option>
+              <option value="1y">Last Year</option>
+            </select>
           </div>
         </div>
       </div>
@@ -419,7 +416,7 @@ export default function AnalyticsPage() {
                         className="bg-blue-500 h-2 rounded-full"
                         style={{ width: `${(month.reviews / 30) * 100}%` }}
                       ></div>
-                    </div>
+                      </div>
                     <span className={`text-sm font-medium ${getMetricColor(month.rating, 'rating')}`}>
                       {month.rating}
                     </span>
