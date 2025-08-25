@@ -1,3 +1,7 @@
+/* Force black text for all select and option elements in filters */
+.filter-select, .filter-select option {
+  color: #000 !important;
+}
 @import "tailwindcss";
 
 :root {

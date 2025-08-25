@@ -16,7 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        <link rel="icon" type="image/png" href="/favicon-dark-green.png" />
+      </head>
+      <body className={inter.className} suppressHydrationWarning={true}>
         {children}
       </body>
     </html>

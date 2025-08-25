@@ -405,15 +405,18 @@ export default function SettingsPage() {
                           </div>
                           <div>
                             <h3 className="text-lg font-medium text-gray-900">Google Reviews</h3>
-                            <p className="text-sm text-gray-500">Sync reviews from Google My Business</p>
+                            <p className="text-sm text-gray-500">Sync reviews from Google My Business using Google Places API.<br/><span className='text-xs text-blue-600'>Requires Google API Key.</span></p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                            Available
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${integrations.googleReviewsConnected ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                            {integrations.googleReviewsConnected ? 'Connected' : 'Available'}
                           </span>
-                          <button className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-medium hover:bg-gray-900">
-                            Connect
+                          <button
+                            className={`px-4 py-2 rounded-lg text-sm font-medium ${integrations.googleReviewsConnected ? 'bg-gray-300 text-gray-700' : 'bg-gray-800 text-white hover:bg-gray-900'}`}
+                            onClick={() => setIntegrations(prev => ({ ...prev, googleReviewsConnected: !prev.googleReviewsConnected }))}
+                          >
+                            {integrations.googleReviewsConnected ? 'Disconnect' : 'Connect'}
                           </button>
                         </div>
                       </div>

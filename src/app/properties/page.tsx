@@ -353,7 +353,8 @@ export default function PropertiesPage() {
                 placeholder="Property name or location..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300 text-black placeholder-black"
+                style={{ color: 'black' }}
               />
             </div>
             
@@ -363,11 +364,12 @@ export default function PropertiesPage() {
               <select
                 value={locationFilter}
                 onChange={(e) => setLocationFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300 text-black"
+                style={{ color: 'black' }}
               >
-                <option value="">All Locations</option>
+                <option value="" style={{ color: 'black' }}>All Locations</option>
                 {uniqueLocations.map(location => (
-                  <option key={location} value={location}>{location}</option>
+                  <option key={location} value={location} style={{ color: 'black' }}>{location}</option>
                 ))}
               </select>
             </div>
@@ -378,11 +380,12 @@ export default function PropertiesPage() {
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300 text-black"
+                style={{ color: 'black' }}
               >
-                <option value="">All Types</option>
+                <option value="" style={{ color: 'black' }}>All Types</option>
                 {uniqueTypes.map(type => (
-                  <option key={type} value={type}>{type}</option>
+                  <option key={type} value={type} style={{ color: 'black' }}>{type}</option>
                 ))}
               </select>
             </div>
@@ -393,12 +396,13 @@ export default function PropertiesPage() {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300 text-black"
+                style={{ color: 'black' }}
               >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="inactive">Inactive</option>
+                <option value="" style={{ color: 'black' }}>All Status</option>
+                <option value="active" style={{ color: 'black' }}>Active</option>
+                <option value="maintenance" style={{ color: 'black' }}>Maintenance</option>
+                <option value="inactive" style={{ color: 'black' }}>Inactive</option>
               </select>
             </div>
             
@@ -408,13 +412,14 @@ export default function PropertiesPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gray-300 focus:border-gray-300 text-black"
+                style={{ color: 'black' }}
               >
-                <option value="name">Name</option>
-                <option value="rating">Rating</option>
-                <option value="reviews">Reviews</option>
-                <option value="occupancy">Occupancy</option>
-                <option value="price">Price</option>
+                <option value="name" style={{ color: 'black' }}>Name</option>
+                <option value="rating" style={{ color: 'black' }}>Rating</option>
+                <option value="reviews" style={{ color: 'black' }}>Reviews</option>
+                <option value="occupancy" style={{ color: 'black' }}>Occupancy</option>
+                <option value="price" style={{ color: 'black' }}>Price</option>
               </select>
             </div>
           </div>
@@ -520,12 +525,9 @@ export default function PropertiesPage() {
                 <div className="flex space-x-2">
                   <button 
                     onClick={() => handleViewDetails(property.name)}
-                    className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors"
+                    className="w-full bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-900 transition-colors"
                   >
                     View Details
-                  </button>
-                  <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                    Edit
                   </button>
                 </div>
               </div>

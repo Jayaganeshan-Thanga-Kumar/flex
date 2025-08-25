@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { mockReviews } from '@/data/mock-reviews';
+import { useEffect } from 'react';
 import Header from '@/components/Header';
 
 interface AnalyticsData {
@@ -17,28 +18,121 @@ interface AnalyticsData {
 }
 
 export default function AnalyticsPage() {
+  const [googleReviews, setGoogleReviews] = useState([]);
   const [timeRange, setTimeRange] = useState('6m');
   const [selectedMetric, setSelectedMetric] = useState('reviews');
+  useEffect(() => {
+    fetch('/api/reviews/google')
+      .then(res => res.json())
+      .then(data => setGoogleReviews(data))
+      .catch(() => setGoogleReviews([]));
+  }, []);
 
-  // Calculate analytics data
+  // Calculate analytics data based on selected time range
   const analyticsData: AnalyticsData = useMemo(() => {
-    const totalReviews = mockReviews.length;
-    const approvedReviews = mockReviews.filter(r => r.status === 'approved');
-    const averageRating = approvedReviews.length > 0 
-      ? approvedReviews.reduce((sum, r) => sum + r.rating, 0) / approvedReviews.length 
-      : 0;
-    const approvalRate = totalReviews > 0 ? (approvedReviews.length / totalReviews) * 100 : 0;
+  // Combine all reviews
+  const allReviews = [...mockReviews, ...googleReviews];
+    // Filter reviews based on selected time range
+    const getFilteredReviews = () => {
+      const now = new Date();
+      let startDate = new Date();
+      switch (timeRange) {
+        case '1m':
+          startDate.setMonth(now.getMonth() - 1);
+          break;
+        case '3m':
+          startDate.setMonth(now.getMonth() - 3);
+          break;
+        case '6m':
+          startDate.setMonth(now.getMonth() - 6);
+          break;
+        case '1y':
+          startDate.setFullYear(now.getFullYear() - 1);
+          break;
+        default:
+          startDate.setMonth(now.getMonth() - 6);
+      }
+      return allReviews.filter(review => {
+        const reviewDate = new Date(review.date);
+        return reviewDate >= startDate;
+      });
+    };
 
-    // Rating distribution
+    const filteredReviews = getFilteredReviews();
+    const approvedReviews = filteredReviews.filter(r => r.status === 'approved');
+
+    // Generate monthly trends based on time range
+    const generateMonthlyTrends = () => {
+      const now = new Date();
+      const trends = [];
+      let monthsToShow = 6;
+      
+      switch (timeRange) {
+        case '1m':
+          monthsToShow = 1;
+          break;
+        case '3m':
+          monthsToShow = 3;
+          break;
+        case '6m':
+          monthsToShow = 6;
+          break;
+        case '1y':
+          monthsToShow = 12;
+          break;
+      }
+      
+      // Store all reviews from the trends for consistency calculations
+      let allTrendReviews = [];
+      
+      for (let i = monthsToShow - 1; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const monthName = date.toLocaleDateString('en-US', { month: 'short' });
+        
+        // Filter reviews for this specific month
+        const monthReviews = filteredReviews.filter(review => {
+          const reviewDate = new Date(review.date);
+          return reviewDate.getMonth() === date.getMonth() && 
+                 reviewDate.getFullYear() === date.getFullYear();
+        });
+        
+        // Add to all trend reviews for later calculations
+        allTrendReviews.push(...monthReviews);
+        
+        const monthRating = monthReviews.length > 0 
+          ? monthReviews.reduce((sum, r) => sum + r.rating, 0) / monthReviews.length 
+          : 0;
+        
+        trends.push({
+          month: monthName,
+          reviews: monthReviews.length,
+          rating: monthRating
+        });
+      }
+      
+      return { trends, allTrendReviews };
+    };
+
+    const { trends: monthlyTrends, allTrendReviews } = generateMonthlyTrends();
+
+    // Calculate totals based on reviews actually included in monthly trends
+    const totalReviewsFromTrends = monthlyTrends.reduce((sum, month) => sum + month.reviews, 0);
+    const approvedInTrends = allTrendReviews.filter(r => r.status === 'approved');
+    const adjustedApprovalRate = totalReviewsFromTrends > 0 ? (approvedInTrends.length / totalReviewsFromTrends) * 100 : 0;
+    const adjustedAverageRating = approvedInTrends.length > 0 
+      ? approvedInTrends.reduce((sum, r) => sum + r.rating, 0) / approvedInTrends.length 
+      : 0;
+
+    // Rating distribution based on reviews that appear in monthly trends
     const ratingDistribution = [5, 4, 3, 2, 1].map(rating => {
-      const count = mockReviews.filter(r => r.rating === rating).length;
-      const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+      const count = allTrendReviews.filter(r => r.rating === rating).length;
+      const percentage = totalReviewsFromTrends > 0 ? (count / totalReviewsFromTrends) * 100 : 0;
       return { rating, count, percentage };
     });
 
-    // Property performance
+    // Property performance based on filtered reviews
     const propertyStats = new Map();
-    mockReviews.forEach(review => {
+    filteredReviews.forEach(review => {
       if (!propertyStats.has(review.listingName)) {
         propertyStats.set(review.listingName, { ratings: [], count: 0 });
       }
@@ -60,16 +154,6 @@ export default function AnalyticsPage() {
       trend: getTrendForProperty(name) // Deterministic trend data
     })).sort((a, b) => b.rating - a.rating);
 
-    // Mock monthly trends
-    const monthlyTrends = [
-      { month: 'Mar', reviews: 12, rating: 4.2 },
-      { month: 'Apr', reviews: 18, rating: 4.1 },
-      { month: 'May', reviews: 25, rating: 4.3 },
-      { month: 'Jun', reviews: 22, rating: 4.4 },
-      { month: 'Jul', reviews: 28, rating: 4.2 },
-      { month: 'Aug', reviews: 15, rating: 4.5 }
-    ];
-
     // Top performers
     const topPerformers = propertyPerformance.slice(0, 3);
 
@@ -88,9 +172,9 @@ export default function AnalyticsPage() {
       }));
 
     return {
-      totalReviews,
-      averageRating,
-      approvalRate,
+      totalReviews: totalReviewsFromTrends,
+      averageRating: adjustedAverageRating,
+      approvalRate: adjustedApprovalRate,
       monthlyGrowth: 15.2, // Mock data
       ratingDistribution,
       propertyPerformance,
@@ -98,7 +182,7 @@ export default function AnalyticsPage() {
       topPerformers,
       needsAttention
     };
-  }, []);
+  }, [timeRange]);
 
   const getMetricColor = (value: number, type: 'rating' | 'trend' | 'approval') => {
     switch (type) {
@@ -140,6 +224,22 @@ export default function AnalyticsPage() {
     );
   };
 
+  // Get time range label for display
+  const getTimeRangeLabel = () => {
+    switch (timeRange) {
+      case '1m':
+        return 'Last Month';
+      case '3m':
+        return 'Last 3 Months';
+      case '6m':
+        return 'Last 6 Months';
+      case '1y':
+        return 'Last Year';
+      default:
+        return 'Last 6 Months';
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <Header />
@@ -157,6 +257,12 @@ export default function AnalyticsPage() {
               <p className="text-lg text-gray-600 font-light">
                 Deep insights into your property performance and guest satisfaction
               </p>
+              <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Showing data for: {getTimeRangeLabel()}
+              </div>
             </div>
             
             {/* Time Range Filter */}
